@@ -61,6 +61,8 @@ public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
     @Override
     public List<String> obterAprovados() {
 
+        listaAprovados.clear();
+
         for (Candidato candidato : listaCandidatos.values()) {
             if (candidato.getStatus().equals(EtapasCandidato.APROVADO)) {
                 listaAprovados.add(candidato.getNome());
