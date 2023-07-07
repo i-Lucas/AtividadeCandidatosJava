@@ -1,13 +1,14 @@
-package gerenciador;
+package com.atividade.gerenciador;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import candidato.Candidato;
-import etapas.EtapasCandidato;
-import exceptions.CandidatoJaParticipa;
-import exceptions.CandidadoNaoEncontrado;
+import com.atividade.candidato.Candidato;
+import com.atividade.etapas.EtapasCandidato;
+import com.atividade.exceptions.CandidatoJaParticipa;
+import com.atividade.exceptions.CandidatoNomeInvalido;
+import com.atividade.exceptions.CandidadoNaoEncontrado;
 
 public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
 
@@ -26,11 +27,11 @@ public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
     }
 
     @Override
-    public int adicionarCandidato(String nome) throws CandidatoJaParticipa {
+    public int adicionarCandidato(String nome) throws CandidatoJaParticipa, CandidatoNomeInvalido {
 
         try {
 
-            this.verificarCandidato(nome);
+            this.validarCandidato(nome);
             return this.colocarNaLista(nome);
 
         } catch (CandidatoJaParticipa e) {
@@ -42,20 +43,10 @@ public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
     public Candidato buscarCandidato(int codCandidato) throws CandidadoNaoEncontrado {
 
         if (!listaCandidatos.containsKey(codCandidato)) {
-            throw new CandidadoNaoEncontrado("Candidato não encontrado");
+            throw new CandidadoNaoEncontrado();
         }
 
         return listaCandidatos.get(codCandidato);
-    }
-
-    @Override
-    public void verificarCandidato(String nome) throws CandidatoJaParticipa {
-
-        for (Candidato candidato : listaCandidatos.values()) {
-            if (candidato.getNome().equals(nome)) {
-                throw new CandidatoJaParticipa(candidato.getNome());
-            }
-        }
     }
 
     @Override
@@ -64,7 +55,7 @@ public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
         listaAprovados.clear();
 
         for (Candidato candidato : listaCandidatos.values()) {
-            if (candidato.getStatus().equals(EtapasCandidato.APROVADO)) {
+            if (candidato.getStatus().equals(EtapasCandidato.Aprovado)) {
                 listaAprovados.add(candidato.getNome());
             }
         }
@@ -72,7 +63,21 @@ public class GerenciadorDeCandidatos implements IGerenciadorDeCandidatos {
         return listaAprovados;
     }
 
+    private void validarCandidato(String nome) throws CandidatoJaParticipa, CandidatoNomeInvalido {
+
+        if (!nome.matches("^(?!\\s*$).+")) {
+            throw new CandidatoNomeInvalido();
+        }
+
+        for (Candidato candidato : listaCandidatos.values()) {
+            if (candidato.getNome().equals(nome)) {
+                throw new CandidatoJaParticipa(candidato.getNome());
+            }
+        }
+    }
+
     private int colocarNaLista(String nome) {
+
         int id = gerarIdSequencial();
         listaCandidatos.put(id, new Candidato(nome));
         return id;

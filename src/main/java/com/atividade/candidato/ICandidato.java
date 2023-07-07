@@ -1,6 +1,6 @@
-package candidato;
+package com.atividade.candidato;
 
-import etapas.EtapasCandidato;
+import com.atividade.etapas.EtapasCandidato;
 
 public interface ICandidato {
 

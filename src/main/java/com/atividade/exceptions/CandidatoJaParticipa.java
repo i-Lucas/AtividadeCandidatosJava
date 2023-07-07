@@ -1,4 +1,4 @@
-package exceptions;
+package com.atividade.exceptions;
 
 public class CandidatoJaParticipa extends Exception {
     public CandidatoJaParticipa(String nomeCandidato) {

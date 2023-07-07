@@ -1,6 +1,6 @@
-package candidato;
+package com.atividade.candidato;
 
-import etapas.EtapasCandidato;
+import com.atividade.etapas.EtapasCandidato;
 
 public class Candidato implements ICandidato {
 
@@ -9,7 +9,7 @@ public class Candidato implements ICandidato {
 
     public Candidato(String nome) {
         this.nome = nome;
-        this.status = EtapasCandidato.RECEBIDO;
+        this.status = EtapasCandidato.Recebido;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Candidato implements ICandidato {
 
     @Override
     public String imprimirStatus() {
-        return String.format("Nome: %s\nStatus: %s\n", this.getNome(), this.getStatus());
+        return this.getStatus().toString();
     }
 
 }
