@@ -1,50 +1,176 @@
-import exceptions.CandidadoNaoEncontrado;
-import exceptions.CandidatoJaParticipa;
+import java.util.Scanner;
+
 import segundoteste.Segundo;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Segundo processo = new Segundo();
-        System.out.println("\nLista dos aprovados: " + processo.obterAprovados());
+        Segundo sistemaRH = new Segundo();
 
-        try {
+        Scanner scanner = new Scanner(System.in);
 
-            processo.iniciarProcesso("Fulano");
-            processo.iniciarProcesso("Lucas");
+        boolean executando = true;
 
-        } catch (CandidatoJaParticipa error) {
+        while (executando) {
 
-            System.out.println("\n" + error + "\n");
-            error.printStackTrace();
+            exibirMenu();
+
+            String escolha = scanner.nextLine();
+
+            switch (escolha) {
+
+                case "1":
+
+                    System.out.println("Digite o nome do candidato:");
+
+                    String nomeCandidato = scanner.nextLine();
+
+                    try {
+
+                        int idCandidato = sistemaRH.iniciarProcesso(nomeCandidato);
+
+                        System.out.println("Candidato registrado com sucesso. ID: " + idCandidato);
+
+                    } catch (Exception e) {
+
+                        System.out.println("Erro: " + e.getMessage());
+
+                    }
+
+                    break;
+
+                case "2":
+
+                    System.out.println("Digite o ID do candidato:");
+
+                    int idMarcarEntrevista = Integer.parseInt(scanner.nextLine());
+
+                    try {
+
+                        sistemaRH.marcarEntrevista(idMarcarEntrevista);
+
+                        System.out.println("Entrevista marcada para o candidato.");
+
+                    } catch (Exception e) {
+
+                        System.out.println("Erro: " + e.getMessage());
+
+                    }
+
+                    break;
+
+                case "3":
+
+                    System.out.println("Digite o ID do candidato:");
+
+                    int idDesqualificar = Integer.parseInt(scanner.nextLine());
+
+                    try {
+
+                        sistemaRH.desqualificarCandidato(idDesqualificar);
+
+                        System.out.println("Candidato desqualificado com sucesso.");
+
+                    } catch (Exception e) {
+
+                        System.out.println("Erro: " + e.getMessage());
+
+                    }
+
+                    break;
+
+                case "4":
+
+                    System.out.println("Digite o ID do candidato:");
+
+                    int idVerificarStatus = Integer.parseInt(scanner.nextLine());
+
+                    try {
+
+                        String statusCandidato = sistemaRH.verificarStatusCandidato(idVerificarStatus);
+
+                        System.out.println("Status do candidato: " + statusCandidato);
+
+                    } catch (Exception e) {
+
+                        System.out.println("Erro: " + e.getMessage());
+
+                    }
+
+                    break;
+
+                case "5":
+
+                    System.out.println("Digite o ID do candidato:");
+
+                    int idAprovarCandidato = Integer.parseInt(scanner.nextLine());
+
+                    try {
+
+                        sistemaRH.aprovarCandidato(idAprovarCandidato);
+
+                        System.out.println("Candidato aprovado com sucesso.");
+
+                    } catch (Exception e) {
+
+                        System.out.println("Erro: " + e.getMessage());
+
+                    }
+
+                    break;
+
+                case "6":
+
+                    System.out.println("Lista de candidatos aprovados:");
+
+                    sistemaRH.obterAprovados().forEach(System.out::println);
+
+                    break;
+
+                case "0":
+
+                    executando = false;
+
+                    System.out.println("Saindo do sistema...");
+
+                    break;
+
+                default:
+
+                    System.out.println("Opção inválida. Tente novamente.");
+
+                    break;
+
+            }
+
         }
 
-        try {
-
-            System.out.println("\n" + processo.verificarStatusCandidato(1));
-            processo.marcarEntrevista(1);
-            System.out.println(processo.verificarStatusCandidato(1));
-            processo.desqualificarCandidato(1);
-            System.out.println(processo.verificarStatusCandidato(1));
-
-            processo.marcarEntrevista(2);
-            processo.aprovarCandidato(2);
-            System.out.println("Lista dos aprovados: " + processo.obterAprovados());
-
-        } catch (CandidadoNaoEncontrado error) {
-
-            System.out.println("\n" + error + "\n");
-            error.printStackTrace();
-        }
-
-        try {
-            processo.iniciarProcesso("Lucas");
-
-        } catch (CandidatoJaParticipa error) {
-            System.out.println("\n" + error + "\n");
-            error.printStackTrace();
-        }
+        scanner.close();
 
     }
+
+    private static void exibirMenu() {
+
+        System.out.println("==== Sistema de RH - Controle de Candidatos ====");
+
+        System.out.println("Selecione uma opção:");
+
+        System.out.println("1. Registrar candidato");
+
+        System.out.println("2. Marcar entrevista para candidato");
+
+        System.out.println("3. Desqualificar candidato");
+
+        System.out.println("4.Verificar status do candidato");
+
+        System.out.println("5. Aprovar candidato");
+
+        System.out.println("6. Listar candidatos aprovados");
+
+        System.out.println("0. Sair do sistema");
+
+        System.out.print("Opção: ");
+    }
+
 }
